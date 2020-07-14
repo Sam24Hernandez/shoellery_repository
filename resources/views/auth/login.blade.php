@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div style="text-align: center; font-size: 20px; font-weight: bold;" class="card-header">{{ __('Iniciar Sesión') }}</div>
 
@@ -11,7 +11,7 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">                            
+                        <div class="form-group row">                                         
 
                             <div class="col-md-12">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus style="background: rgba(var(--b3f,250,250,250),1);">

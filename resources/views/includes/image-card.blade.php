@@ -13,8 +13,7 @@
             <a class="text-muted" href="{{ route('profile', ['id' => $image->user->id])}}">                
                 {{'@'.$image->user->nick}}
             </a> 
-            <span class="nickname date">{{' | '.\FormatTime::LongTimeFilter($image->created_at)}}</span>
-            <p>{{$image->description}}</p>
+            <span class="nickname date">{{' | '.\FormatTime::LongTimeFilter($image->created_at)}}</span>           
         </div>
     </div>
 </div>

@@ -4,11 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <h1 style="text-align: center;">Fotos que me han gustado</h1>
+            <h1 id="title-likes" style="text-align: center;">Fotos Favoritas</h1>
             <hr/>
                         
             @foreach($likes as $like)
-            @include('includes.image-card',['image'=>$like->image])
+                @include('includes.image-card',['image'=>$like->image])
             @endforeach
 
             <!-- PAGINACION -->
@@ -17,4 +17,4 @@
         </div>
     </div>
 </div>
-@stop
+@endsection

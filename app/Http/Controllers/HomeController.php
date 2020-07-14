@@ -13,7 +13,7 @@ class HomeController extends Controller
      * @return void
      */
     public function __construct()
-    {
+    {        
         $this->middleware('auth');
     }
 
@@ -24,8 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $images = Image::orderBy('id', 'desc')->paginate(15);                
-        
+        $images = Image::orderBy('id', 'desc')->paginate(10);                        
+
         return view('home', [
             'images' => $images
         ]);

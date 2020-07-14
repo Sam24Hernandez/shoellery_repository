@@ -21,5 +21,10 @@
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
         "vue": "^2.5.17"
+    },
+    "dependencies": {
+        "@webcreate/infinite-ajax-scroll": "^3.0.0-beta.6",
+        "jscroll": "^2.4.1",
+        "laravel-echo": "^1.8.0"
     }
 }

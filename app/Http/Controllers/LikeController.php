@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Like;
 
 class LikeController extends Controller
@@ -14,7 +15,7 @@ class LikeController extends Controller
     // Búsqueda de los likes de un usuario
     public function index(){
         $user = \Auth::user();
-        $likes = Like::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
+        $likes = Like::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(10);
 
         return view('like.index',[
                 'likes' => $likes

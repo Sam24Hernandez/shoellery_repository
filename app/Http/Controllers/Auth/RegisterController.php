@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use SweetAlert;
 
 class RegisterController extends Controller {
     /*
@@ -29,7 +30,7 @@ use RegistersUsers;
      *
      * @var string
      */
-    protected $redirectTo = '/login';
+    protected $redirectTo = '/login';    
 
     /**
      * Create a new controller instance.
@@ -50,7 +51,7 @@ use RegistersUsers;
         return Validator::make($data, [
                     'name' => ['required', 'string', 'max:255'],
                     'surname' => ['required', 'string', 'max:255'],
-                    'nick' => ['required', 'string', 'max:255'],
+                    'nick' => ['required', 'string', 'max:255', 'unique:users'],
                     'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                     'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -78,7 +79,7 @@ use RegistersUsers;
 
         event(new Registered($user = $this->create($request->all())));
 
-        return redirect($this->redirectPath())->with('message', 'Your message');
+        return redirect($this->redirectPath())->with('message', 'Registrado en Shoellery');
     }
 
 }

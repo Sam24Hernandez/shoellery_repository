@@ -4,11 +4,12 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
-            <h1>Descubre Gente</h1>
+            <h1 id="title-people">Descubre Gente</h1>
+            <br>
             <form method="GET" action="{{ route('user.index') }}" id="buscador">
                 <div class="row">
                     <div class="form-group col">
-                        <input type="text" id="search" class="form-control" placeholder="Descubre la gelería de la gente" />
+                        <input type="text" id="search" class="form-control" placeholder="Descubre artistas" />
                     </div>
                     <div class="form-group col btn-search">
                         <input type="submit" value="Buscar" class="btn btn-success"/>
@@ -33,7 +34,7 @@
                 <div class="user-info">
                     <h2>{{'@'.$user->nick}}</h2>
                     <h3>{{$user->name .' '. $user->surname}}</h3>
-                    <p>{{'Se unió: '.\FormatTime::LongTimeFilter($user->created_at)}}</p>
+                    <p><strong>Se unió: </strong>{{\FormatTime::LongTimeFilter($user->created_at)}}</p>
                     <a href="{{ route('profile', ['id' => $user->id])}}" class="btn btn-success">Ver perfil</a>
                 </div>
 

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\User;
-use App\Image;
 
 class UserController extends Controller {
 
@@ -19,18 +19,18 @@ class UserController extends Controller {
     }        
 
     // Búsqueda de usuarios
-    public function index($search = null) {
-        if (!empty($search)) {
-            $users = User::where('nick', 'LIKE', '%' . $search . '%')
-                    ->orWhere('name', 'LIKE', '%' . $search . '%')
-                    ->orWhere('surname', 'LIKE', '%' . $search . '%')
-                    ->orderBy('id', 'desc')
-                    ->paginate(10);
-        } else {
+    public function index($search = null){
+        if(!empty($search)){
+            $users = User::where('nick', 'LIKE', '%'.$search.'%')
+                            ->orWhere('name', 'LIKE', '%'.$search.'%')
+                            ->orWhere('surname', 'LIKE', '%'.$search.'%')
+                            ->orderBy('id', 'desc')
+                            ->paginate(10);
+        }else{
             $users = User::orderBy('id', 'desc')->paginate(10);
         }
-
-        return view('user.index', [
+        
+        return view('user.index',[
             'users' => $users
         ]);
     }
@@ -85,18 +85,18 @@ class UserController extends Controller {
         // Ejecutamos la consulta y los cambios en la base de datos
         $user->update();
 
-        return redirect()->route('config')
-                        ->with(['message' => 'Perfil Guardado.']);
+        alert()->success('Perfil Actualizado.');
+
+        return redirect()->route('config');                        
     }
 
     public function getImage($filename) {
         $file = Storage::disk('users')->get($filename);
         return new Response($file, 200);
-    }
+    }    
 
-    public function profile($id) { // $id
-        $user = User::find($id);
-        $images = Image::where('user_id', $user->id)->count();
+    public function profile($id) { 
+        $user = User::find($id);        
 
         return view('user.profile', [
             'user' => $user
@@ -106,12 +106,14 @@ class UserController extends Controller {
     public function changePassword(Request $request) {
     if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
         // The passwords matches
-        return redirect()->back()->with("error", "Tú contraseña actual no coincide con la contraseña que proporcionó. Inténtalo de nuevo.");
+        alert()->error('Error','Tú contraseña actual no coincide con la contraseña que proporcionó. Inténtalo de nuevo.');
+        return redirect()->back();        
     }
 
     if (strcmp($request->get('current-password'), $request->get('new-password')) == 0) {
         //Current password and new password are same
-        return redirect()->back()->with("error", "La nueva contraseña no puede ser la misma que su contraseña actual. Por favor, elija una contraseña diferente.");
+        alert()->warning('¡Hey!','La nueva contraseña no puede ser la misma que su contraseña actual. Por favor, elija una contraseña diferente.');
+        return redirect()->back();        
     }
 
     $validatedData = $request->validate([
@@ -124,7 +126,9 @@ class UserController extends Controller {
     $user->password = bcrypt($request->get('new-password'));
     $user->save();
 
-    return redirect()->back()->with("success", "Contraseña cambiada con éxito.");
-    }
+    alert()->success('Contraseña Actualizada.');
+
+    return redirect()->back();    
+    }   
 
 }

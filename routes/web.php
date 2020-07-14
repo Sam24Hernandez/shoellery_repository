@@ -12,20 +12,24 @@
 */
 
 Route::get('/', function () {
+
     return view('welcome');
 });
 
-Auth::routes();
-// RUTA GENERAL
-Route::get('/', 'HomeController@index')->name('home');
+// RUTAS GENERALES DE LA WEB
+Auth::routes(['verify' => true]);
 
-// USUARIOS
+Route::get('/', 'HomeController@index')->name('home')->middleware('verified');
+// PRESENTACIÓN DE LA WEB
+Route::get('shoellery', 'PagesController@welcome')->name('pages.welcome');
+
+// USUARIO
 Route::get('/settings', 'UserController@config')->name('config');
 Route::post('/user/update', 'UserController@update')->name('user.update');
 Route::post('/user/update-password', 'UserController@changePassword')->name('user.update-password');
 Route::get('/user/avatar/{filename}', 'UserController@getImage')->name('user.avatar');
 Route::get('/profile/{id}', 'UserController@profile')->name('profile');
-Route::get('/gente/{search?}', 'UserController@index')->name('user.index');
+Route::get('/people/{search?}', 'UserController@index')->name('user.index');
 
 // IMAGEN
 Route::get('/upload-photo', 'ImageController@create')->name('image.create');
@@ -35,6 +39,7 @@ Route::get('/photo/{id}', 'ImageController@detail')->name('image.detail');
 Route::get('/photo/delete/{id}', 'ImageController@delete')->name('image.delete');
 Route::get('/photo/edit/{id}', 'ImageController@edit')->name('image.edit');
 Route::post('/photo/update', 'ImageController@update')->name('image.update');
+Route::get('/p-view/{id}', 'ImageController@view')->name('image.view');
 
 // COMENTARIO
 Route::post('/comment/save', 'CommentController@save')->name('comment.save');
@@ -44,4 +49,5 @@ Route::get('/comment/delete/{id}', 'CommentController@delete')->name('comment.de
 Route::get('/like/{image_id}', 'LikeController@like')->name('like.save');
 Route::get('/dislike/{image_id}', 'LikeController@dislike')->name('like.delete');
 Route::get('/likes', 'LikeController@index')->name('likes');
+
 

@@ -7,22 +7,27 @@
         <div class="col-md-8">
 
             <div class="card">
-                <div style="text-align: center; font-size: 20px; font-weight: bold;" class="card-header">
+                <div id="title-edit" style="text-align: center; font-size: 20px; font-weight: bold;" class="card-header">
                     Actualizar Foto
                 </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('image.update') }}" enctype="multipart/form-data">
-                        @csrf   
-                        <input type="hidden" name="image_id" value="{{$image->id}}" />
+                        @csrf 
+
+                        <input type="hidden" name="image_id" value="{{ $image->id }}" />
+
                         <div class="form-group row">
                             <label for="image_path" class="col-sm-2 col-form-label">Foto</label>
                             <div class="col-sm-10">
+
                                 @if($image->user->image)
+                                
                                 <div class="avatar-center">
                                     <img src="{{ route('image.file',['filename' => $image->image_path]) }}" class="avatar"/>									
                                 </div>
                                 @endif
+                                
                                 <input id="image_path" type="file" name="image_path" class="form-control {{ $errors->has('image_path') ? 'is-invalid' : '' }}" />
 
                                 @if($errors->has('image_path'))

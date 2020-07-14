@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Image;
 use App\Comment;
 use App\Like;
@@ -24,6 +25,7 @@ class ImageController extends Controller {
 
     // Guardar tu foto en tu perfil de usuario
     public function save(Request $request) {
+
         // Validación de imágenes
         $this->validate($request, [
             'description' => 'required',
@@ -43,14 +45,15 @@ class ImageController extends Controller {
         if ($image_path) {
             $image_path_name = time() . $image_path->getClientOriginalName();            
             Storage::disk('images')->put($image_path_name, File::get($image_path));
+
             $image->image_path = $image_path_name;            
         }                
 
         $image->save();
 
-        return redirect()->route('home')->with([
-                    'message' => 'Foto compartida a la galería.'
-        ]);
+        alert()->success('¡Genial!','Tu foto ha sido compartida a la galería.');
+
+        return redirect()->route('home');                          
     }       
 
     public function getImage($filename) {
@@ -62,15 +65,23 @@ class ImageController extends Controller {
         $image = Image::find($id);
 
         return view('image.detail', [
+            'image' => $image            
+        ]);
+    }    
+
+    public function view($id){
+        $image = Image::find($id);
+
+        return view('image.view', [
             'image' => $image
         ]);
-    }     
+    } 
 
     public function delete($id) {
         $user = \Auth::user();
         $image = Image::find($id);
         $comments = Comment::where('image_id', $id)->get();
-        $likes = Like::where('image_id', $id)->get();
+        $likes = Like::where('image_id', $id)->get();      
 
         if ($user && $image && $image->user->id == $user->id) {
 
@@ -93,13 +104,13 @@ class ImageController extends Controller {
 
             // Eliminar registro imagen
             $image->delete();
-
-            $message = array('message' => 'La foto ha sido borrada.');
+       
+            alert()->success('Tú foto ha sido borrada.');
         } else {
-            $message = array('message' => 'La foto no se ha borrado.');
+            alert()->error('¿Algo salió mal?','La foto no se pudo borrar.');
         }
 
-        return redirect()->route('home')->with($message);
+        return redirect()->route('home');
     }
 
     // Editar imagen o descripcion de la imagen publicada
@@ -137,14 +148,17 @@ class ImageController extends Controller {
         if ($image_path) {
             $image_path_name = time() . $image_path->getClientOriginalName();
             Storage::disk('images')->put($image_path_name, File::get($image_path));
+            
             $image->image_path = $image_path_name;
         }
 
         // Actualizar registro
         $image->update();
 
-        return redirect()->route('image.detail', ['id' => $image_id])
-                        ->with(['message' => 'Foto actualizada.']);
+        alert()->success('¡Listo!','Tu foto ha sido actualizada.');
+
+        return redirect()->route('image.detail', ['id' => $image_id]);
+                        
     }      
 
 }

@@ -1,5 +1,6 @@
 var url = 'http://shoellery.com.devel';
 window.addEventListener("load", function () {
+
     $('.btn-like').css('cursor', 'pointer');
     $('.btn-dislike').css('cursor', 'pointer');
 
@@ -14,9 +15,9 @@ window.addEventListener("load", function () {
                 type: 'GET',
                 success: function (response) {
                     if (response.like) {
-                        console.log('Te ha gustado esta foto');
+                        
                     } else {
-                        console.log('Error al dar like');
+                        
                     }
                 }
             });
@@ -36,9 +37,9 @@ window.addEventListener("load", function () {
                 type: 'GET',
                 success: function (response) {
                     if (response.like) {
-                        console.log('No te ha gustado esta foto');
+                
                     } else {
-                        console.log('Error al dar dislike');
+                        
                     }
                 }
             });
@@ -49,11 +50,11 @@ window.addEventListener("load", function () {
 
     // Método del buscador
     $("#buscador").submit(function () {
-        $(this).attr('action', url + '/gente/' + $('#buscador #search').val());
+        $(this).attr('action', url + '/people/' + $('#buscador #search').val());
     });
 
 
-    // Boton de deslike
+    // Mostrar la Contraseña
     function showPassword() {
         var change = document.getElementById('password-confirm');
         $('#show_password').unbind('click').click(function () {
@@ -70,6 +71,7 @@ window.addEventListener("load", function () {
     }
     showPassword();
 
+    // Mostrar la Contraseña de Confirmación
     function showPasswordConfirmation() {
         var change = document.getElementById('new-password-confirm');
         $('#show_password_confirmation').unbind('click').click(function () {
@@ -84,6 +86,7 @@ window.addEventListener("load", function () {
     }
     showPasswordConfirmation();
 
+    // Evento de Animación de NavBrand
     var words = document.getElementsByClassName('word');
     var wordArray = [];
     var currentWord = 0;
@@ -139,17 +142,34 @@ window.addEventListener("load", function () {
     changeWord();
     setInterval(changeWord, 4000);
 
-    function numberTo(n){
-        x = (''+n).length;
-        p = Math.pow;
-        d = p(10,true);
-        x -= x%3;
-        return Math.round(n*d/p(10,x))/d+" kMGTPE"[x/3];
-    }
-    numberTo();   
+    // Método para el modo oscuro en la web
+    const btnSwitch = document.querySelector('#switch');
 
+    btnSwitch.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        btnSwitch.classList.toggle('activeBtn');
+
+        // Guardamos el modo dark en el local storage
+        // Comprobamos si tiene la clase dark
+        if(document.body.classList.contains('dark')){
+            localStorage.setItem('dark-mode', 'true');
+        }else {
+             localStorage.setItem('dark-mode', 'false');
+        }
+    });  
+
+    // Obtenemos el modo actual
+    if(localStorage.getItem('dark-mode') === 'true'){
+        document.body.classList.add('dark');
+        btnSwitch.classList.add('activeBtn');
+    }else{
+        document.body.classList.remove('dark');
+        btnSwitch.classList.remove('activeBtn');
+    }
     
 });
+
+
 
 
 

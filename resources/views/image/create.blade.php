@@ -1,28 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10">
             
             <div class="card">
-                <div style="text-align: center; font-size: 20px; font-weight: bold;" class="card-header">
+                <div id="title-create" style="text-align: center; font-size: 20px; font-weight: bold;" class="card-header">
                     Nueva foto para la galería
                 </div>
+
                 <div class="card-body">
+
                     <form method="POST" action="{{ route('image.save') }}" enctype="multipart/form-data">
                         @csrf
+
                         <div class="form-group row">
                             <label for="image_path" class="col-sm-2 col-form-label">Foto</label>
                             <div class="col-sm-10">
-                                <input id="image_path" type="file" name="image_path" class="form-control {{ $errors->has('image_path') ? 'is-invalid' : '' }}" required>
-                                
-                                @if($errors->has('image_path'))
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $errors->first('image_path') }}</strong>
-                                </span>
-                                @endif
-                                
+                                <!-- DRAG AND DROP FUNCTION -->
+                                <input type="file" id="image_path" name="image_path" class="dropify" data-allowed-file-extensions="jpg png jpeg gif" data-max-file-size="5M" required/>
                             </div>
                         </div>
                         
@@ -52,5 +50,30 @@
     </div>
     
 </div>
-@stop
+@endsection
 
+@push('styles')
+<!-- DRAG AND DROP FILE -->
+<link rel="stylesheet" href="{{ asset('plugins/dropify.min.css') }}">
+@endpush
+
+@push('scripts')
+<!-- jQuery file upload -->
+<script src="{{ asset('js/dropify.min.js') }}"></script>
+<!-- SCRIPTS DE INICIALIZACIÓN -->
+
+<script type="text/javascript">
+    $(document).ready(function($) {
+        // Funcionalidades Básicas del Drop
+        $('.dropify').dropify({           
+            messages: {
+            'default': 'Arrastra y suelta una foto aquí o haz clic',
+            'replace': 'Arrastra y suelta o haz clic para reemplazar',
+            'remove':  'Quitar',
+            'error':   'Oops, sucedió algo malo.'
+            }
+        });
+    });
+</script>
+
+@endpush

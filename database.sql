@@ -15,11 +15,13 @@ nick            varchar(100),
 email           varchar(255),
 password        varchar(255),
 image           varchar(255),
+front			varchar(255),
 bio             varchar(255),
 created_at      datetime,
 updated_at      datetime,
 remember_token  varchar(255),
-CONSTRAINT pk_users PRIMARY KEY(id)
+CONSTRAINT pk_users PRIMARY KEY(id),
+CONSTRAINT users_uniques_fields UNIQUE (email, nick)
 )ENGINE=InnoDb;
 
 INSERT INTO users VALUES(NULL, 'admin', 'Sam', 'Hernández', 'heysamgallery', 'sam@herco24.com', 'password', null, 'Bienvenidos a mi galería de fotos', CURTIME(), CURTIME(), NULL);
